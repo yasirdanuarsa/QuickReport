@@ -22,6 +22,7 @@ class Crud extends Model
         'bukti',
         'status',
         'users_id',
+        'deadline',
     ];
     
 

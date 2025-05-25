@@ -1,6 +1,6 @@
 @extends('admin.admin')
 
-@section('content')
+@section('edit')
 <div class="container mt-5">
   <h3 class="mb-4">Edit Laporan</h3>
 
@@ -95,6 +95,11 @@
         <option value="pending" {{ $laporan->status == 'pending' ? 'selected' : '' }}>Pending</option>
         <option value="selesai" {{ $laporan->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
       </select>
+    </div>
+    {{-- Deadline --}}
+    <div class="mb-3">
+      <label for="deadline">Deadline</label>
+      <input type="date" name="deadline" class="form-control" value="{{ $laporan->deadline }}" required>
     </div>
 
     <button type="submit" class="btn btn-primary">Simpan Perubahan</button>

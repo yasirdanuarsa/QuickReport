@@ -25,10 +25,35 @@ class MonevController extends Controller
         if ($request->filled('tanggal')) {
             $query->whereDate('tanggal_laporan', $request->tanggal);
         }
-    
+        
         $laporans = $query->orderBy('tanggal_laporan', 'desc')->paginate(10); // ← Pagination 10 data per halaman
+       // Ambil data untuk chart bulanan
+        $laporanBulanan = Crud::selectRaw('MONTH(tanggal_laporan) as bulan, COUNT(*) as total')
+        ->groupBy('bulan')
+        ->orderBy('bulan')
+        ->pluck('total', 'bulan')
+        ->mapWithKeys(function ($val, $key) {
+            return [\Carbon\Carbon::create()->month($key)->locale('id')->monthName => $val];
+        });
+
+        // Ambil data untuk chart harian (7 hari terakhir)
+        $laporanHarian = Crud::selectRaw('DATE(tanggal_laporan) as tanggal, COUNT(*) as total')
+        ->where('tanggal_laporan', '>=', now()->subDays(6))
+        ->groupBy('tanggal')
+        ->orderBy('tanggal')
+        ->pluck('total', 'tanggal')
+        ->mapWithKeys(function ($val, $key) {
+            return [\Carbon\Carbon::parse($key)->locale('id')->translatedFormat('d M') => $val];
+        }); 
+        $statusCounts = [
+        'Pending' => $laporans->where('status', 'pending')->count(),
+        'Selesai' => $laporans->where('status', 'selesai')->count()
+];
+
     
-        return view('admin.products.index', compact('laporans'));
+        return view('admin.products.index', compact('laporans', 'laporanBulanan', 'laporanHarian', 'statusCounts'));
+       
+        
     }
 
     /**
@@ -54,6 +79,7 @@ class MonevController extends Controller
             'petugas_id' => 'required|exists:users,id',
             'surat_masuk_file' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'nomor_telepon' => 'nullable|string|max:20',
+            'deadline' => 'required|date',
         ]);
 
         // Simpan file jika ada
@@ -73,7 +99,9 @@ class MonevController extends Controller
             'instansi' => $request->instansi,
             'status' => 'pending', // default
             'users_id' => $request->petugas_id,
+            'deadline' => $request->deadline,
         ]);
+
 
         return redirect()->route('monev.create')->with('success', 'Laporan berhasil disimpan!');
     }
@@ -107,6 +135,7 @@ class MonevController extends Controller
             'nomor_telepon' => 'nullable|string|max:20',
             'bukti' => 'nullable|image|max:2048',
             'hasil' => 'nullable|string',
+            'deadline' => 'required|date',
 
         ]);
     
@@ -252,6 +281,61 @@ class MonevController extends Controller
     
         return redirect()->route('monev.index')->with('success', 'Laporan berhasil dihapus!');
     }
-     
+    
+    public function dashboard()
+    {
+        $petugas = Auth::user();
+    
+        if ($petugas->role === 'admin') {
+            // data khusus admin
+            return view('admin.admin');
+        } else {
+            // data khusus petugas
+            return view('petugas.layouts');
+        }
+        // Ambil data laporan per bulan & tahun
+    $laporanPerBulan = Crud::table('laporans')
+        ->select(Crud::raw('MONTH(created_at) as bulan'), Crud::raw('count(*) as total'))
+        ->groupBy('bulan')
+        ->pluck('total', 'bulan');
+
+    $laporanPerTahun = Crud::table('laporans')
+        ->select(Crud::raw('YEAR(created_at) as tahun'), Crud::raw('count(*) as total'))
+        ->groupBy('tahun')
+        ->pluck('total', 'tahun');
+
+    // Kriteria lain (jenis laporan, aktivitas, status, petugas)
+    $byJenis = Crud::table('laporans')->select('jenis', Crud::raw('count(*) as total'))->groupBy('jenis')->pluck('total', 'jenis');
+    $byAktivitas = Crud::table('laporans')->select('aktivitas', Crud::raw('count(*) as total'))->groupBy('aktivitas')->pluck('total', 'aktivitas');
+    $byStatus = Crud::table('laporans')->select('status', Crud::raw('count(*) as total'))->groupBy('status')->pluck('total', 'status');
+    $byPetugas = Crud::table('laporans')->select('petugas_id', Crud::raw('count(*) as total'))->groupBy('petugas_id')->pluck('total', 'petugas_id');
+
+    return view($user->role === 'admin' ? 'dashboard-admin' : 'dashboard-petugas', compact(
+        'laporanPerBulan',
+        'laporanPerTahun',
+        'byJenis',
+        'byAktivitas',
+        'byStatus',
+        'byPetugas'
+    ));
+    }
+    public function extendForm($id)
+    {
+    $laporan = Crud::findOrFail($id);
+    return view('admin.products.extend', compact('laporan'));
+    }
+
+    public function extendDeadline(Request $request, $id)
+    {
+    $request->validate(['deadline' => 'required|date|after:today']);
+    
+    $laporan = Crud::findOrFail($id);
+    $laporan->deadline = $request->deadline;
+    $laporan->notified = false;
+    $laporan->save();
+
+    return redirect()->route('monev.index')->with('success', 'Deadline berhasil diperpanjang.');
+    }
+    
 
 }

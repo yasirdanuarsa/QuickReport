@@ -15,12 +15,12 @@
                 <input type="password" name="password" placeholder="Password" class="w-full mb-3 p-2 border rounded" required>
                 <button type="submit" class="bg-blue-500 w-full text-white py-2 rounded hover:bg-blue-600">Login</button>
             </form>
-            <div class="text-center mt-4">
+            {{-- <div class="text-center mt-4">
                 <button onclick="showRegister()" class="text-blue-600 hover:underline">Belum punya akun? Daftar di sini</button>
-            </div>
+            </div> --}}
         </div>
 
-        {{-- Form Register --}}
+        {{-- Form Register
         <div id="register-form" style="display: none;">
             <h2 class="text-2xl font-semibold text-center mb-6">Register</h2>
             <form action="{{ route('register') }}" method="POST">
@@ -34,7 +34,7 @@
             <div class="text-center mt-4">
                 <button onclick="showLogin()" class="text-blue-600 hover:underline">Sudah punya akun? Login di sini</button>
             </div>
-        </div>
+        </div> --}}
 
         <hr class="my-6">
         <div class="text-center">

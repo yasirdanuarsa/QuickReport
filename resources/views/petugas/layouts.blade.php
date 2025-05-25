@@ -34,17 +34,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
-
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
 
   <!-- Navbar -->
-  @include('admin.components.nav')
+  @include('petugas.components.navbar-petugas')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  @include('admin.components.sidebar')
+  @include('petugas.components.sidebar-petugas')
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -58,26 +57,19 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Main content -->
     <section class="content">
-      @yield('crud')
-      @yield('extend')
-      @yield('edit')
-      @yield('register')
-    <div class="row justify-content-center mb-4">
-      <div class="col-md-4">
+       <div class="row justify-content-center mb-4">
+        <div class="col-md-4">
         <canvas id="chartBulanan" style="max-height: 300px;"class="mt-4"></canvas>
       </div>
-      <div class="col-md-4">
+        <div class="col-md-4">
         <canvas id="chartHarian" style="max-height: 300px;" class="mt-4"></canvas>
       </div>
       <div class="col-md-4">
         <canvas id="chartStatus" style="max-height: 300px;"class="mt-4"></canvas>
-      </div>
-    </div>
-
+     </div>
+     </div>
       <div class="container-fluid">
         @yield('content')
-        
-        @yield('scripts')
       </div>
 
     </section>

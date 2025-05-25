@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Schedule;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -56,10 +57,19 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role' => \App\Http\Middleware\RoleMiddleware::class,
 
-
+        
         // Custom Middleware
         // 'admin' => \App\Http\Middleware\AdminMiddleware::class,
         // 'petugas' => \App\Http\Middleware\PetugasMiddleware::class,
         // 'role' => \App\Http\Middleware\RoleMiddleware::class, // Tambahkan Middleware Role di sini
     ];
+    protected function schedule(Schedule $schedule)
+    {
+        $schedule->command('laporan:check-deadline')->daily();
+    }
+
+    protected $commands = [
+        \App\Console\Commands\CheckLaporanDeadline::class,
+    ];
+
 }

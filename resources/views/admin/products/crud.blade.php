@@ -1,6 +1,6 @@
 @extends('admin.admin')
 
-@section('content')
+@section('crud')
 <div class="container mt-5">
   <h2 class="mb-4 text-center">Input Laporan</h2>
 
@@ -22,8 +22,8 @@
     {{-- Tabs jenis laporan --}}
     <ul class="nav nav-pills mb-3" id="laporanTabs" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="tab-surat" data-bs-toggle="pill" type="button"
-          data-bs-target="#surat" role="tab">Surat Masuk</button>
+        <button class="nav-link active" id="tab-surat-masuk" data-bs-toggle="pill" type="button"
+          data-bs-target="#surat_masuk" role="tab">Surat Masuk</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="tab-telepon" data-bs-toggle="pill" type="button"
@@ -90,6 +90,12 @@
         @endforeach
       </select>
     </div>
+    {{-- Deadline --}}
+    <div class="form-group mb-3">
+        <label for="deadline" class="form-label">Deadline</label>
+        <input type="date" name="deadline" class="form-control" required>
+    </div>
+
 
     <button type="submit" class="btn btn-primary w-100">Simpan Laporan</button>
   </form>
