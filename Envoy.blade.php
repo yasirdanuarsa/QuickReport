@@ -37,6 +37,10 @@
 
     composer install --prefer-dist --no-dev
 
+    echo "🚀 Building assets with Vite..."
+    npm run build
+
+
     echo "🚀 Running Migrations..."
     php ./artisan migrate --force || { echo "❌ Migration failed"; exit 1; }
 
