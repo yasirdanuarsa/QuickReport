@@ -30,6 +30,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="{{asset('AdminLTE/plugins/daterangepicker/daterangepicker.css')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{asset('AdminLTE/plugins/summernote/summernote-bs4.min.css')}}">
+  {{-- <!-- button -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> --}}
+
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -62,21 +65,47 @@ scratch. This page gets rid of all links and provides the needed markup only.
       @yield('extend')
       @yield('edit')
       @yield('register')
-    <div class="row justify-content-center mb-4">
-      <div class="col-md-4">
-        <canvas id="chartBulanan" style="max-height: 300px;"class="mt-4"></canvas>
+      @yield('tabel')
+{{-- <div class="container-fluid my-3">
+  <div class="row justify-content-center">    
+    <div class="row">
+      <div class="col-md-3 mb-4 text-center">
+        <h6>Laporan Per Bulan</h6>
+        <canvas id="chartBulanan" style="max-height: 200px;"></canvas>
       </div>
-      <div class="col-md-4">
-        <canvas id="chartHarian" style="max-height: 300px;" class="mt-4"></canvas>
+      <div class="col-md-3 mb-4 text-center">
+        <h6>Laporan Harian</h6>
+        <canvas id="chartHarian" style="max-height: 200px;"></canvas>
       </div>
-      <div class="col-md-4">
-        <canvas id="chartStatus" style="max-height: 300px;"class="mt-4"></canvas>
+      <div class="col-md-3 mb-4 text-center">
+        <h6>Status Laporan</h6>
+        <canvas id="chartStatus" style="max-height: 200px;"></canvas>
+      </div>
+      <div class="col-md-3 mb-4 text-center">
+        <h6>Laporan per Petugas</h6>
+        <canvas id="chartLaporanPetugas" style="max-height: 230px;"></canvas>
       </div>
     </div>
+  </div>
+</div> --}}
+
 
       <div class="container-fluid">
         @yield('content')
-        
+        <style>
+    .pagination .page-link {
+        padding: 0.25rem 0.5rem;  /* ukuran kecil */
+        font-size: 0.75rem;       /* teks kecil */
+        border-radius: 0.2rem;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #007bff;
+        border-color: #007bff;
+        color: #fff;
+    }
+</style>
+
         @yield('scripts')
       </div>
 

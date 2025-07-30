@@ -15,6 +15,8 @@ class User extends Authenticatable
     public function laporan()
     {
         return $this->hasMany(Crud::class, 'petugas_id');
+        return $this->hasMany(\App\Models\Crud::class, 'users_id');
     }
+    
      
 }

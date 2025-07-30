@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\LaporanExport;
 // use Dompdf\Dompdf;
@@ -26,7 +27,7 @@ class MonevController extends Controller
             $query->whereDate('tanggal_laporan', $request->tanggal);
         }
         
-        $laporans = $query->orderBy('tanggal_laporan', 'desc')->paginate(10); // ← Pagination 10 data per halaman
+        $laporans = $query->orderBy('tanggal_laporan', 'desc')->paginate(20); // ← Pagination 10 data per halaman
        // Ambil data untuk chart bulanan
         $laporanBulanan = Crud::selectRaw('MONTH(tanggal_laporan) as bulan, COUNT(*) as total')
         ->groupBy('bulan')
@@ -48,10 +49,27 @@ class MonevController extends Controller
         $statusCounts = [
         'Pending' => $laporans->where('status', 'pending')->count(),
         'Selesai' => $laporans->where('status', 'selesai')->count()
-];
+        ];
+        // Ambil jumlah laporan selesai per petugas
+        // Ambil data selesai dan pending per petugas
+    $laporanPerPetugas = DB::table('cruds')
+        ->join('users', 'cruds.users_id', '=', 'users.id')
+        ->select('users.name',
+            DB::raw("SUM(CASE WHEN status = 'selesai' THEN 1 ELSE 0 END) as selesai"),
+            DB::raw("SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) as pending")
+        )
+        ->groupBy('users.name')
+        ->get();
 
-    
-        return view('admin.products.index', compact('laporans', 'laporanBulanan', 'laporanHarian', 'statusCounts'));
+    // Buat struktur data untuk chart
+    $petugasNames = $laporanPerPetugas->pluck('name');
+    $selesaiCounts = $laporanPerPetugas->pluck('selesai');
+    $pendingCounts = $laporanPerPetugas->pluck('pending');
+
+    return view('admin.products.index', compact(
+        'laporans', 'laporanBulanan', 'laporanHarian', 'statusCounts',
+        'petugasNames', 'selesaiCounts', 'pendingCounts'
+    ));
        
         
     }

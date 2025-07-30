@@ -131,8 +131,8 @@
               </small>
             </td>
             <td>
-              <a href="{{ route('petugas.laporan.show', $laporan->id) }}" class="btn btn-sm btn-info">Detail</a>
-              <a href="{{ route('petugas.laporan.edit', $laporan->id) }}" class="btn btn-sm btn-primary">Edit</a>
+              <a href="{{ route('monev.show', $laporan->id) }}" class="btn btn-sm btn-info">Detail</a>
+              <a href="{{ route('monev.show', $laporan->id) }}" class="btn btn-sm btn-primary">Edit</a>
             </td>
           </tr>
         @endforeach

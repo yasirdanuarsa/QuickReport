@@ -36,7 +36,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item ">
-            <a href="/petugas/dashboard-petugas" class="nav-link ">
+            <a href="/petugas/dashboard" class="nav-link ">
               <i class="nav-icon fas fa-th"></i>
               <p>
                 Dashboard
@@ -45,7 +45,7 @@
             </a>
           </li>
             <li class="nav-item">
-              <a href="/report" class="nav-link">
+              <a href="/laporan/{id}/edit" class="nav-link">
                 <i class="nav-icon fas fa-tachometer-alt"></i>
                 <p>
                   Input Laporan

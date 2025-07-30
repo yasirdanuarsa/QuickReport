@@ -3,7 +3,13 @@
 @section('register')
 <div class="container mt-5">
     <h2 class="mb-4">Form Registrasi</h2>
-
+    {{-- Alert feedback --}}
+      @if(session('success'))
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ session('success') }}
+        <button type="button" class="btn btn-danger" data-bs-dismiss="alert"></button>
+      </div>
+      @endif
     @if ($errors->any())
         <div class="alert alert-danger">
             <strong>Terjadi kesalahan!</strong>

@@ -13,10 +13,11 @@
   </div>
 </div>
 @endsection
+@include('admin.components.tabel')
 @section('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Common chart options
+// Common chart options
     const commonOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -87,7 +88,52 @@
             cutout: '65%' // buat jadi doughnut
         }
     });
+// Chart: Laporan per Petugas (Selesai vs Pending)
+const ctxPetugas = document.getElementById('chartLaporanPetugas').getContext('2d');
+new Chart(ctxPetugas, {
+    type: 'bar',
+    data: {
+        labels: @json($petugasNames),
+        datasets: [
+            {
+                label: 'Selesai',
+                data: @json($selesaiCounts),
+                backgroundColor: 'rgba(40, 167, 69, 0.7)',
+                borderRadius: 6
+            },
+            {
+                label: 'Pending',
+                data: @json($pendingCounts),
+                backgroundColor: 'rgba(255, 193, 7, 0.7)',
+                borderRadius: 6
+            }
+        ]
+    },
+    options: {
+        ...commonOptions,
+        responsive: true,
+        plugins: {
+            title: {
+                display: false
+            },
+            legend: {
+                position: 'top'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
+
 </script>
+
+
 @endsection
 
 
@@ -200,9 +246,9 @@
         @endforelse
       </tbody>    
     </table>
-    <div class="d-flex justify-content-center mt-3">
-      {{ $laporans->links() }}
-  </div>
+    {{-- <div class="d-flex justify-content-center mt-3">
+      {{ $laporans->links(admin.vendor.pagination.tailwind) }}
+  </div> --}}
   </div>
 </div>
 @endsection

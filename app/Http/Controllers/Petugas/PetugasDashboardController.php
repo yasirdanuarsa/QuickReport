@@ -3,38 +3,41 @@
 namespace App\Http\Controllers\Petugas;
 
 use App\Models\Crud;
-use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PetugasDashboardController extends Controller
 {
     public function index()
     {
         $user = Auth::user();
-        $laporans = Crud::where('users_id', $user->id)->latest()->paginate(10);
 
-        // Diagram untuk laporan bulanan
+        $laporans = Crud::where('users_id', $user->id)
+            ->latest()
+            ->paginate(10);
+
+        // Laporan bulanan
         $laporanBulanan = Crud::selectRaw('MONTH(tanggal_laporan) as bulan, COUNT(*) as total')
             ->where('users_id', $user->id)
             ->groupBy('bulan')
             ->orderBy('bulan')
             ->pluck('total', 'bulan')
-            ->mapWithKeys(function ($val, $key) {
-                return [\Carbon\Carbon::create()->month($key)->locale('id')->monthName => $val];
-            });
+            ->mapWithKeys(fn ($val, $key) => [
+                \Carbon\Carbon::create()->month($key)->locale('id')->monthName => $val
+            ]);
 
-        // Diagram untuk laporan harian (7 hari terakhir)
+        // Laporan harian (7 hari terakhir)
         $laporanHarian = Crud::selectRaw('DATE(tanggal_laporan) as tanggal, COUNT(*) as total')
             ->where('users_id', $user->id)
             ->where('tanggal_laporan', '>=', now()->subDays(6))
             ->groupBy('tanggal')
             ->orderBy('tanggal')
             ->pluck('total', 'tanggal')
-            ->mapWithKeys(function ($val, $key) {
-                return [\Carbon\Carbon::parse($key)->locale('id')->translatedFormat('d M') => $val];
-            });
+            ->mapWithKeys(fn ($val, $key) => [
+                \Carbon\Carbon::parse($key)->locale('id')->translatedFormat('d M') => $val
+            ]);
 
         return view('petugas.dashboard', compact('laporans', 'laporanBulanan', 'laporanHarian'));
     }
@@ -65,10 +68,16 @@ class PetugasDashboardController extends Controller
         ]);
 
         if ($request->hasFile('bukti')) {
+            // Hapus file lama jika ada
+            if ($laporan->bukti && Storage::disk('public')->exists($laporan->bukti)) {
+                Storage::disk('public')->delete($laporan->bukti);
+            }
+
             $validated['bukti'] = $request->file('bukti')->store('bukti', 'public');
         }
 
         $laporan->update($validated);
+
         return redirect()->route('petugas.dashboard')->with('success', 'Laporan berhasil diperbarui.');
     }
 }

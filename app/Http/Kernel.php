@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
     protected $commands = [
         \App\Console\Commands\CheckLaporanDeadline::class,
     ];
+    
 
 }
