@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('nomor_telepon')->nullable();
             $table->string('activity'); // New activity column
             $table->date('tanggal_laporan');
-            $table->date('deadline')->nullable();
+            // $table->date('deadline')->nullable();
             $table->string('perihal');
             $table->string('instansi');
             $table->foreignId('users_id')->constrained('users'); // bukan 'petugas'
