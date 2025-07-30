@@ -1,8 +1,8 @@
 @servers(['production' => ['root@165.22.103.46']])
 
 @setup
-    $repo = 'https://github.com/DanuCandra/manage-mitra-linkbit.git';
-    $appDir = '/var/www/mitra-linkbit';
+    $repo = 'https://github.com/yasirdanuarsa/QuickReport.git';
+    $appDir = '/var/www/monev';
     $branch = 'main';
 
     date_default_timezone_set('Asia/Jakarta');
@@ -40,9 +40,7 @@
     echo "🚀 Running Migrations..."
     php ./artisan migrate --force || { echo "❌ Migration failed"; exit 1; }
 
-    echo "🚀 Running Seeder..."
-    php ./artisan db:seed --class=RoleSeeder --force || { echo "❌ Role seediing failed"; exit 1; }
-    php ./artisan db:seed --class=UserSeeder --force || { echo "❌ Seeding failed"; exit 1; }
+    
 @endtask
 
 @task('live', ['on' => 'production'])
