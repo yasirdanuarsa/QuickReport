@@ -37,10 +37,10 @@
 
     composer install --prefer-dist --no-dev
 
-    echo "🚀 Installing dependencies with Composer..."
+    echo "🚀 Ins talling dependencies with Composer..."
     npm install --no-audit --no-fund --prefer-offline
 
-    echo "🚀 Building assets with Vite..."
+    echo "🚀 Bui lding assets with Vite..."
     npm run build
 
 
@@ -48,7 +48,7 @@
     php ./artisan migrate --force || { echo "❌ Migration failed"; exit 1; }
 
     echo "🚀 Running Seeders..."
-    {{-- php ./artisan db:seed --class=UserSeeder --force || { echo "❌ Seeder failed";} --}}
+    php ./artisan db:seed --class=UserSeeder --force || { echo "❌ Seeder failed";}
 
 @endtask
 
