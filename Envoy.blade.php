@@ -35,7 +35,7 @@
     ln -nfs {{ $env }} {{ $deployment }}/.env
     ln -nfs {{ $storage }} {{ $deployment }}/storage
 
-    echo "🚀 Installing PHP dependencies..."
+    echo "🚀 Installing PHP dependencies... "
     composer install --prefer-dist --no-dev
 
     echo "🚀 Running Migrations..."
