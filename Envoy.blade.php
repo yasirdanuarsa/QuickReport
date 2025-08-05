@@ -23,50 +23,50 @@
 @endstory
 
 @task('git', ['on' => 'production'])
+    echo "🚀 Cloning repository..."
     git clone -b {{ $branch }} "{{ $repo }}" {{ $deployment }}
 @endtask
 
 @task('install', ['on' => 'production'])
+    echo "🚀 Preparing project directory..."
     cd {{ $deployment }}
 
     rm -rf {{ $deployment }}/storage
-
     ln -nfs {{ $env }} {{ $deployment }}/.env
-
     ln -nfs {{ $storage }} {{ $deployment }}/storage
 
+    echo "🚀 Installing PHP dependencies..."
     composer install --prefer-dist --no-dev
 
-    {{-- echo "🚀 Ins talling dependencies with Composer..." --}}
-    {{-- npm install --no-audit --no-fund --prefer-offline --}}
-
-    
-
-
     echo "🚀 Running Migrations..."
-    php ./artisan migrate --force || { echo "❌ Migration failed"; exit 1; }
+    php artisan migrate --force || { echo "❌ Migration failed"; exit 1; }
 
     echo "🚀 Running Seeders..."
-    php ./artisan db:seed --class=UserSeeder --force || { echo "❌ Seeder failed";}
-
+    php artisan db:seed --class=UserSeeder --force || { echo "❌ Seeder failed"; }
 @endtask
 
 @task('live', ['on' => 'production'])
+    echo "🚀 Activating new deployment..."
     cd {{ $deployment }}
-
     ln -nfs {{ $deployment }} {{ $serve }}
 
     cd /var/www/monev/source
 
-    npm install --no-audit --no-fund --prefer-offline
+    echo "🚀 Loading NVM and using Node.js..."
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    nvm use 22 || { echo '❌ Failed to load Node.js via NVM'; exit 1; }
 
-    echo "🚀 Bui lding assets with Vite... "
-    npm run build
+    echo "🚀 Installing NPM dependencies..."
+    npm install --no-audit --no-fund --prefer-offline || { echo '❌ NPM install failed'; exit 1; }
 
-    {{-- sudo su --}}
+    echo "🚀 Building assets with Vite..."
+    npm run build || { echo '❌ Vite build failed'; exit 1; }
+
+    echo "🚀 Setting file permissions..."
     chown -R www-data: /var/www
 
+    echo "🚀 Restarting PHP-FPM and Nginx..."
     systemctl restart php8.3-fpm
-
     systemctl restart nginx
 @endtask
