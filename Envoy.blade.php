@@ -37,6 +37,9 @@
 
     composer install --prefer-dist --no-dev
 
+    echo "🚀 Installing dependencies with Composer..."
+    npm install 
+
     echo "🚀 Building assets with Vite..."
     npm run build
 
