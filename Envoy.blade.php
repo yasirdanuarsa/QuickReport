@@ -40,8 +40,7 @@
     {{-- echo "🚀 Ins talling dependencies with Composer..." --}}
     {{-- npm install --no-audit --no-fund --prefer-offline --}}
 
-    echo "🚀 Bui lding assets with Vite..."
-    npm run build
+    
 
 
     echo "🚀 Running Migrations..."
@@ -56,6 +55,13 @@
     cd {{ $deployment }}
 
     ln -nfs {{ $deployment }} {{ $serve }}
+
+    cd /var/www/monev/source
+
+    npm install --no-audit --no-fund --prefer-offline
+
+    echo "🚀 Bui lding assets with Vite..."
+    npm run build
 
     {{-- sudo su --}}
     chown -R www-data: /var/www
