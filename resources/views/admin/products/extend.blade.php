@@ -40,7 +40,7 @@
         </div>
 
         <div class="d-flex justify-content-between">
-          <a href="{{ route('monev.index') }}" class="btn btn-secondary">← Kembali</a>
+          <a href="{{ url('/dashboard') }}" class="btn btn-secondary">← Kembali</a>
           <button type="submit" class="btn btn-warning">Perpanjang Deadline</button>
         </div>
       </form>

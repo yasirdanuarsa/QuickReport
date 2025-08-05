@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
 // ===================
 // Route Khusus Petugas
 // ===================
-Route::middleware(['auth', 'role:petugas'])->prefix('petugas')->group(function () {
+Route::middleware(['auth'])->prefix('petugas')->group(function () {
     Route::get('/dashboard', [MonevController::class, 'index'])->name('monev.index');
     Route::get('/laporan/{id}', [MonevController::class, 'show'])->name('monev.show');
     Route::get('/laporan/{id}/edit', [MonevController::class, 'edit'])->name('monev.edit');
