@@ -38,7 +38,7 @@
     composer install --prefer-dist --no-dev
 
     echo "🚀 Installing dependencies with Composer..."
-    npm install 
+    npm install --no-audit --no-fund --prefer-offline
 
     echo "🚀 Building assets with Vite..."
     npm run build
