@@ -57,7 +57,7 @@
     php artisan cache:clear
     php artisan route:clear
 
-    echo "🚀 Loading NVM and using Node.js..."
+    echo "🚀 Loading NVM and using Node.js... "
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm use 22 || { echo '❌ Failed to load Node.js via NVM'; exit 1; }
