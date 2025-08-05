@@ -35,7 +35,7 @@
 
     ln -nfs {{ $storage }} {{ $deployment }}/storage
 
-    composer install --prefer-dist --no-dev
+    
 
     {{-- echo "🚀 Ins talling dependencies with Composer..." --}}
     {{-- npm install --no-audit --no-fund --prefer-offline --}}
@@ -57,6 +57,7 @@
     ln -nfs {{ $deployment }} {{ $serve }}
 
     cd /var/www/monev/source
+    composer install --prefer-dist --no-dev
 
     npm install --no-audit --no-fund --prefer-offline
 
