@@ -177,7 +177,7 @@ class MonevController extends Controller
     
     public function print(Request $request)
     {
-        $query = crud::query();
+        $query = Crud::query();
     
         if ($request->filled('kegiatan')) {
             $query->where('kegiatan', 'like', '%' . $request->kegiatan . '%');
