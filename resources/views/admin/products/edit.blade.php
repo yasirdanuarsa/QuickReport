@@ -65,7 +65,7 @@
       <label for="petugas_id">Nama Petugas</label>
       <select name="petugas_id" class="form-select" required>
         @foreach($petugas as $p)
-          <option value="{{ $p->id }}" {{ $laporan->users_id == $p->id ? 'selected' : '' }}>{{ $p->name }}</option>
+          <option value="{{ $p->id }}">{{ $p->name }}</option>
         @endforeach
       </select>
     </div>
