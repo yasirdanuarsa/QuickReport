@@ -37,8 +37,8 @@
 
     composer install --prefer-dist --no-dev
 
-    echo "🚀 Ins talling dependencies with Composer..."
-    npm install --no-audit --no-fund --prefer-offline
+    {{-- echo "🚀 Ins talling dependencies with Composer..." --}}
+    {{-- npm install --no-audit --no-fund --prefer-offline --}}
 
     echo "🚀 Bui lding assets with Vite..."
     npm run build
