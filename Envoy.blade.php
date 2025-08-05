@@ -60,7 +60,7 @@
 
     npm install --no-audit --no-fund --prefer-offline
 
-    echo "🚀 Bui lding assets with Vite..."
+    echo "🚀 Bui lding assets with Vite... "
     npm run build
 
     {{-- sudo su --}}
