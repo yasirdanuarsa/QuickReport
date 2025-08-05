@@ -52,6 +52,11 @@
 
     cd /var/www/monev/source
 
+    composer dump-autoload
+    php artisan config:clear
+    php artisan cache:clear
+    php artisan route:clear
+
     echo "🚀 Loading NVM and using Node.js..."
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
